@@ -1,0 +1,21 @@
+#!/bin/sh
+touch .wireless.known
+
+vendor() {
+  mac_tr=$(echo $1|sed 's/:/-/g' | cut -c 1-8)
+  vendor=$(grep "$mac_tr" /var/lib/ieee-data/oui.txt | cut -f 3)
+  echo "$1 $vendor"
+}
+
+awk '/wireless,debug/ {print $7}' /var/log/remote/ap.local.log 2>/dev/null | sort | uniq | while read mac; do 
+  vendor $mac
+done >.wireless.list
+
+new_sta=$(comm -2 -3 .wireless.list .wireless.known)
+
+if [ -n "$new_sta" ]; then
+  echo "New WIFI clients:\n$new_sta" | notify
+fi
+
+cat .wireless.known .wireless.list 2>/dev/null | sort | uniq >.wireless.total
+cp .wireless.total .wireless.known

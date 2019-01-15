@@ -1,0 +1,14 @@
+#!/bin/sh
+touch .mounts.total
+mounts="$1"
+
+mount_ok(){
+  awk -v mount="$1" 'BEGIN{status="FAIL"} ($2==mount && $4 ~ /rw,/) {status="NORM"} END{print "Mount",mount,"has",status,"status"}' /proc/mounts
+}
+
+for mnt in $mounts; do
+   mount_ok $mnt
+done | sort >.mounts.status
+
+comm -2 -3 .mounts.status .mounts.total
+cp -f .mounts.status .mounts.total
