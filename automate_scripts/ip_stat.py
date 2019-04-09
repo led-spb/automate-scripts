@@ -52,15 +52,20 @@ class StatisticsAggregator(object):
         self.add_ip(ip)
         cur = self.db.execute('select ifnull(max(value)+1, 1) from counters where ip=? and action=?', (ip, action))
         row = cur.fetchone()
-        self.db.execute("replace into counters(ip, action, updated, value) values (?, ?, datetime('now'), ?);", (ip, action, row[0]))
+
+        self.db.execute(
+            "replace into counters(ip, action, updated, value)"
+            "values (?, ?, datetime('now', 'localtime'), ?);",
+            (ip, action, row[0])
+        )
         pass
 
-    def resolve_all(self, limit=100):
-        cur = self.db.execute('select ip from ip_address where resolved is null limit ?', (limit, ))
+    def resolve_all(self, limit=1000):
+        cur = self.db.execute('select distinct ip from ip_address where resolved is null limit ?', (limit, ))
         resolve = [x[0] for x in cur.fetchall()]
         for ip in resolve:
             self.resolve(ip)
-        print resolve
+        pass
 
     def resolve(self, ip):
         try:
