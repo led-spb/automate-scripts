@@ -1,9 +1,13 @@
 import setuptools
-
+import automate_scripts as module
 
 setuptools.setup(
-    name="automate-scripts",
-    version="0.1.0",
+    name=module.name,
+    version=module.version,
+    packages=setuptools.find_packages(exclude=["tests"]),
+    install_requires=[
+        'ipinfo', 'ipaddress', 'six'
+    ],
     author="Alexey Ponimash",
     author_email="alexey.ponimash@gmail.com",
     scripts=[
@@ -13,5 +17,10 @@ setuptools.setup(
         'bin/lan-devices',
         'bin/weather.sh',
         'bin/wireless-stat'
-    ]
+    ],
+    entry_points={
+        'console_scripts': [
+            'ip-stat = automate_scripts.ip_stat:main'
+        ]
+    }
 )
