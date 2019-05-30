@@ -7,7 +7,7 @@ vendor() {
   echo "$1 $vendor"
 }
 
-awk '/wireless,debug/ {print $7}' /var/log/remote/ap.local.log 2>/dev/null | sort | uniq | while read mac; do 
+awk '/wireless,debug.*attempts/ {print $7}' /var/log/remote/ap.local.log 2>/dev/null | sort | uniq | while read mac; do 
   vendor $mac
 done >.wireless.list
 

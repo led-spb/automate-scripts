@@ -16,7 +16,7 @@ class StatisticsAggregator(object):
             '   country_name varchar2(50),'
             '   org          varchar2(50),'
             '   hostname     varchar2(500),'
-            '   resolved char(1),'
+            '   resolved     char(1),'
             ''
             '   primary key (ip)'
             ');',

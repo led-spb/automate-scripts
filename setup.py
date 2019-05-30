@@ -16,7 +16,8 @@ setuptools.setup(
         'bin/fail-stat.sh',
         'bin/lan-devices',
         'bin/weather.sh',
-        'bin/wireless-stat'
+        'bin/wireless-stat',
+        'bin/swaptop'
     ],
     entry_points={
         'console_scripts': [
