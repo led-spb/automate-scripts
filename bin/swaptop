@@ -1,3 +1,7 @@
 #!/bin/sh
 
-for file in /proc/*/status; do awk '/^VmSwap:/{swap_usage=$2$3} /^Pid:/{pid=$2}/^Name:/{name=$2} END{ print pid " " name " " swap_usage}' $file; done | sort -h -k3 -r
+find /proc -mindepth 2 -maxdepth 2 -name status | \
+    xargs cat 2>/dev/null | \
+    awk 'BEGIN{OFS="\t"} /^Name:/{name=$2} /^Pid:/{pid=$2}  /^VmSwap:/{print $2$3,pid,name}' | \
+    sort -h -k1 -r | \
+    sed "1i SWAP\tPID\tNAME"

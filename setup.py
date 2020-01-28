@@ -17,7 +17,8 @@ setuptools.setup(
         'bin/lan-devices',
         'bin/weather.sh',
         'bin/wireless-stat',
-        'bin/swaptop'
+        'bin/swaptop',
+        'bin/fail2ban-mqtt.sh'
     ],
     entry_points={
         'console_scripts': [
